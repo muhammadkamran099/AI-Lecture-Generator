@@ -10,7 +10,7 @@ def process_lecture_audio(file_path):
     )
     summary = (
         "# AI-Generated Lecture Notes\n\n"
-        "## 📌  Summary\n"
+        "## 📌 Executive Summary\n"
         "This session covered advanced backend software patterns, database query performance tuning, "
         "and architectural patterns for integrating large language models into web frameworks.\n\n"
         "## 🔑 Key Takeaways\n"
