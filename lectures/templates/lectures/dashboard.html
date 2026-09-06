@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard - AI Lecture Notes</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
+        <div class="container">
+            <a class="navbar-brand" href="{% url 'dashboard' %}">🎓 AI Lecture Assistant</a>
+            <div class="d-flex">
+                <span class="navbar-text me-3 text-light">Welcome, {{ request.user.username }}</span>
+                <form action="{% url 'logout' %}" method="post" class="d-inline">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-outline-light btn-sm">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <div class="container">
+        <div class="row mb-4 align-items-center">
+            <div class="col">
+                <h2>Your Lecture Sessions</h2>
+            </div>
+            <div class="col text-end">
+                <a href="{% url 'upload_lecture' %}" class="btn btn-primary">+ Upload New Lecture</a>
+            </div>
+        </div>
+        <div class="row">
+            {% for session in sessions %}
+                <div class="col-md-4 mb-3">
+                    <div class="card shadow-sm h-100">
+                        <div class="card-body d-flex flex-column">
+                            <h5 class="card-title">{{ session.title }}</h5>
+                            <p class="text-muted small mb-2">Uploaded: {{ session.created_at|date:"M d, Y H:i" }}</p>
+                            {% if session.is_processed %}
+                                <span class="badge bg-success mb-3 align-self-start">Processed</span>
+                                <a href="{% url 'note_detail' session.pk %}" class="mt-auto btn btn-outline-primary btn-sm">View Notes &rarr;</a>
+                            {% else %}
+                                <span class="badge bg-warning text-dark mb-3 align-self-start">Processing...</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-secondary text-center py-5">
+                        <h4>No lecture recordings uploaded yet.</h4>
+                        <p class="mb-3">Get started by uploading your first audio recording to generate AI-assisted study notes.</p>
+                        <a href="{% url 'upload_lecture' %}" class="btn btn-primary">Upload Lecture</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
